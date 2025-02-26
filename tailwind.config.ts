@@ -12,7 +12,18 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      backdropBlur: {
+        xs: '2px',
+      }
     },
   },
   plugins: [],
+  // Add custom variants for mix-blend-mode support
+  safelist: [
+    'mix-blend-lighten',
+    'mix-blend-screen',
+    'mix-blend-multiply',
+    'mix-blend-overlay',
+    'mix-blend-color-dodge'
+  ]
 } satisfies Config;

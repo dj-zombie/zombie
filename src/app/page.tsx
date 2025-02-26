@@ -1,101 +1,187 @@
+'use client';
+
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [scrolled, setScrolled] = useState(false);
+  const [textTriggers, setTextTriggers] = useState({
+    emerging: false,
+    fromThe: false,
+    depthOf: false,
+    hell: false,
+    finalReveal: false
+  });
+  
+  // Handle scroll position for revealing content
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const viewportHeight = window.innerHeight;
+      
+      // Updated to trigger text and button much earlier
+      setTextTriggers({
+        emerging: scrollY > viewportHeight * 0.05, // Just 5% scroll
+        fromThe: scrollY > viewportHeight * 0.15, // 15% scroll
+        depthOf: scrollY > viewportHeight * 0.25, // 25% scroll
+        hell: scrollY > viewportHeight * 0.35,    // 35% scroll
+        finalReveal: scrollY > viewportHeight * 0.55 // 55% scroll for logo
+      });
+    };
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <main className="bg-black text-white">
+      {/* Long container to allow scrolling */}
+      <div className="h-[200vh] relative overflow-hidden">
+        {/* Background container */}
+        <div className="relative w-full">
+          <div className="w-full">
+            <img 
+              src="/background-tall.png"
+              alt="ZOMBIE Main Background"
+              className="w-full h-auto"
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          </div>
+          <div className="w-full">
+            <img 
+              src="/hell.png"
+              alt="ZOMBIE Hell Background"
+              className="w-full h-auto"
+            />
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+      </div>
+      
+      {/* Smoke video overlay */}
+      <div 
+        className="fixed bottom-0 left-0 w-full pointer-events-none"
+        style={{ 
+          height: '30vh', 
+          zIndex: 5,
+          opacity: textTriggers.hell ? 1 : 0,
+          transition: 'opacity 0.8s ease-in-out'
+        }}
+      >
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover"
+          style={{ mixBlendMode: "screen" }}
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+          <source src="/smoke.mp4" type="video/mp4" />
+        </video>
+      </div>
+      
+      {/* Scroll-triggered text elements */}
+      <div className="fixed top-0 left-0 w-full h-full pointer-events-none z-10">
+        <motion.div 
+          className="absolute w-full text-center text-white text-5xl md:text-7xl font-bold"
+          style={{ top: "30%" }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ 
+            opacity: textTriggers.finalReveal ? 0 : (textTriggers.emerging ? 1 : 0), 
+            y: textTriggers.emerging ? 0 : 20 
+          }}
+          transition={{ duration: 0.6 }}
         >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+          emerging
+        </motion.div>
+        
+        <motion.div 
+          className="absolute w-full text-center text-white text-5xl md:text-7xl font-bold"
+          style={{ top: "40%" }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ 
+            opacity: textTriggers.finalReveal ? 0 : (textTriggers.fromThe ? 1 : 0), 
+            y: textTriggers.fromThe ? 0 : 20 
+          }}
+          transition={{ duration: 0.6 }}
         >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+          from the
+        </motion.div>
+        
+        <motion.div 
+          className="absolute w-full text-center text-white text-5xl md:text-7xl font-bold"
+          style={{ top: "50%" }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ 
+            opacity: textTriggers.finalReveal ? 0 : (textTriggers.depthOf ? 1 : 0), 
+            y: textTriggers.depthOf ? 0 : 20 
+          }}
+          transition={{ duration: 0.6 }}
+        >
+          depth of
+        </motion.div>
+        
+        <motion.div 
+          className="absolute w-full text-center text-red-600 text-7xl md:text-9xl font-extrabold"
+          style={{ top: "60%" }}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ 
+            opacity: textTriggers.finalReveal ? 0 : (textTriggers.hell ? 1 : 0), 
+            scale: textTriggers.hell ? 1.2 : 0.8,
+            textShadow: textTriggers.hell ? "0 0 20px rgba(255,0,0,0.8)" : "none"
+          }}
+          transition={{ duration: 0.8 }}
+        >
+          HELL
+        </motion.div>
+      </div>
+      
+      {/* Logo and button layer */}
+      <div className="fixed top-0 left-0 w-full h-screen flex flex-col items-center justify-center z-20">
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: textTriggers.finalReveal ? 1 : 0, y: textTriggers.finalReveal ? 0 : -20 }}
+          transition={{ duration: 0.7 }}
+          className="mb-6"
+        >
+          <div className="mix-blend-screen">
+            <Image
+              src="/logo.png"
+              alt="ZOMBIE Logo"
+              width={400}
+              height={200}
+              className="object-contain"
+              priority
+            />
+          </div>
+        </motion.div>
+        
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: textTriggers.finalReveal ? 1 : 0 }}
+          transition={{ delay: 0.2, duration: 0.7 }}
+        >
+          <Link href="/enter">
+            <motion.button
+              className="px-8 py-4 bg-white text-black font-bold rounded-full text-xl hover:bg-gray-200 transition-colors"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Enter
+            </motion.button>
+          </Link>
+        </motion.div>
+      </div>
+      
+      {/* Scanlines overlay */}
+      <div 
+        className="fixed top-0 left-0 w-full h-screen pointer-events-none z-30 opacity-20"
+        style={{
+          backgroundImage: 'url(/scanlines.png)',
+          backgroundRepeat: 'repeat',
+          mixBlendMode: 'overlay'
+        }}
+      ></div>
+    </main>
   );
 }
