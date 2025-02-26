@@ -3,15 +3,35 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import Header from '../components/Header';
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [currentTrack, setCurrentTrack] = useState<null | {title: string, url: string}>(null);
   
   // Mock data for the page
   const latestReleases = [
-    { id: 1, title: "Abyssal Depths", image: "/album1.png", type: "EP" },
-    { id: 2, title: "Eternal Night", image: "/album2.png", type: "Album" },
-    { id: 3, title: "Reanimated", image: "/album3.png", type: "Single" },
+    { 
+      id: 1, 
+      title: "Abyssal Depths", 
+      image: "/album1.png", 
+      type: "EP",
+      soundcloudUrl: "https://soundcloud.com/dj-zombie-az/error-reading-rom"
+    },
+    { 
+      id: 2, 
+      title: "Eternal Night", 
+      image: "/album2.png", 
+      type: "Album",
+      soundcloudUrl: "https://soundcloud.com/dj-zombie-az/silent-scream-machine"
+    },
+    { 
+      id: 3, 
+      title: "Reanimated", 
+      image: "/album3.png", 
+      type: "Single",
+      soundcloudUrl: "https://soundcloud.com/dj-zombie-az/silent-scream-machine" 
+    },
   ];
 
   const tourDates = [
@@ -35,6 +55,11 @@ export default function Home() {
       date: "FEB 10, 2025"
     },
   ];
+
+  const featuredTrack = {
+    title: "SILENT SCREAM MACHINE",
+    url: "https://soundcloud.com/dj-zombie-az/silent-scream-machine"
+  };
 
   return (
     <main className="bg-black text-white min-h-screen overflow-x-hidden relative">
@@ -70,93 +95,7 @@ export default function Home() {
       {/* Page container */}
       <div className="container mx-auto px-4 py-8 relative z-20">
         {/* Header / Hero Section */}
-        <header className="py-6 mb-12">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center">
-              <Link href="/" className="hover:opacity-80 transition-opacity">
-                <h1 className="text-4xl md:text-5xl font-extrabold glitch-text tracking-tighter">
-                  ZOMBIE
-                </h1>
-              </Link>
-            </div>
-            <nav className="hidden md:flex space-x-8">
-              <a href="#music" className="text-white hover:text-red-500 transition-colors">Music</a>
-              <a href="#tour" className="text-white hover:text-red-500 transition-colors">Tour</a>
-              <a href="#news" className="text-white hover:text-red-500 transition-colors">News</a>
-              <Link href="/about" className="text-white hover:text-red-500 transition-colors">About</Link>
-            </nav>
-            {/* Mobile menu button */}
-            <button 
-              className="md:hidden glitch-hover"
-              onClick={() => setMobileMenuOpen(true)}
-            >
-              <span className="block w-6 h-0.5 bg-white mb-1"></span>
-              <span className="block w-6 h-0.5 bg-white mb-1"></span>
-              <span className="block w-6 h-0.5 bg-white"></span>
-            </button>
-          </div>
-        </header>
-        
-        {/* Mobile menu */}
-        {mobileMenuOpen && (
-          <div className="fixed inset-0 bg-black bg-opacity-95 z-50 flex flex-col justify-center items-center">
-            <button 
-              className="absolute top-8 right-8 text-white text-2xl"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              ✕
-            </button>
-            <nav className="text-center">
-              <ul className="space-y-8 text-xl">
-                <li>
-                  <Link 
-                    href="/" 
-                    className="hover:text-red-600 transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    HOME
-                  </Link>
-                </li>
-                <li>
-                  <a 
-                    href="#music" 
-                    className="hover:text-red-600 transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    MUSIC
-                  </a>
-                </li>
-                <li>
-                  <a 
-                    href="#tour" 
-                    className="hover:text-red-600 transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    TOUR
-                  </a>
-                </li>
-                <li>
-                  <a 
-                    href="#news" 
-                    className="hover:text-red-600 transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    NEWS
-                  </a>
-                </li>
-                <li>
-                  <Link
-                    href="/about"
-                    className="hover:text-red-600 transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    ABOUT
-                  </Link>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        )}
+        <Header />
         
         {/* Hero Section */}
         <section className="relative h-[60vh] sm:h-[70vh] mb-16 overflow-hidden rounded-lg">
@@ -186,6 +125,43 @@ export default function Home() {
         <section id="music" className="mb-16">
           <h2 className="text-3xl font-bold mb-6 border-l-4 border-red-600 pl-4 text-glitch">LATEST RELEASES</h2>
           
+          {/* SoundCloud Featured Track */}
+          <div className="mb-10 bg-zinc-900 rounded-lg overflow-hidden p-4">
+            <h3 className="text-xl font-bold mb-4 text-red-500">FEATURED TRACK</h3>
+            <div className="flex flex-col md:flex-row gap-4 items-center">
+              <div className="w-full md:w-1/3 aspect-square relative">
+                <Image 
+                  src="/zombie-dj.png" 
+                  alt="Featured Track" 
+                  fill
+                  className="object-cover" 
+                />
+                <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40">
+                  <button 
+                    onClick={() => setCurrentTrack(featuredTrack)}
+                    className="bg-red-600 rounded-full p-4 hover:bg-red-700 transition-colors"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div className="w-full md:w-2/3">
+                <h4 className="text-2xl font-bold">{featuredTrack.title}</h4>
+                <p className="text-gray-400 mt-2">
+                  Hard Techno Mix featuring tracks from various artists. Experience the digital decay of sound through layered beats and distorted synthesizers.
+                </p>
+                <button 
+                  onClick={() => setCurrentTrack(featuredTrack)}
+                  className="mt-4 bg-red-600 hover:bg-red-700 py-2 px-6 text-white transition-colors"
+                >
+                  PLAY NOW
+                </button>
+              </div>
+            </div>
+          </div>
+          
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {latestReleases.map((release) => (
               <div 
@@ -194,7 +170,10 @@ export default function Home() {
               >
                 <div className="aspect-square relative">
                   <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 opacity-0 hover:opacity-100 transition-opacity z-10">
-                    <button className="bg-red-600 rounded-full p-4">
+                    <button 
+                      onClick={() => setCurrentTrack({title: release.title, url: release.soundcloudUrl})}
+                      className="bg-red-600 rounded-full p-4 hover:bg-red-700 transition-colors"
+                    >
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white">
                         <path d="M8 5v14l11-7z"/>
                       </svg>
@@ -210,7 +189,10 @@ export default function Home() {
                 <div className="p-4">
                   <div className="text-xs text-red-500 mb-1">{release.type}</div>
                   <h3 className="text-xl font-bold">{release.title}</h3>
-                  <button className="mt-3 text-sm text-zinc-400 hover:text-white">
+                  <button 
+                    onClick={() => setCurrentTrack({title: release.title, url: release.soundcloudUrl})}
+                    className="mt-3 text-sm text-zinc-400 hover:text-white inline-block"
+                  >
                     LISTEN NOW
                   </button>
                 </div>
@@ -218,6 +200,33 @@ export default function Home() {
             ))}
           </div>
         </section>
+        
+        {/* Inline SoundCloud Player for selected track */}
+        {currentTrack && (
+          <div className="mt-8 mb-8 bg-zinc-900 rounded-lg overflow-hidden p-4 animate-fadeIn fixed bottom-0 left-0 right-0 z-40 md:relative md:bottom-auto md:left-auto md:right-auto">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-bold text-red-500 truncate pr-2">NOW PLAYING: {currentTrack.title}</h3>
+              <button 
+                onClick={() => setCurrentTrack(null)} 
+                className="text-zinc-400 hover:text-white flex-shrink-0"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div className="relative w-full aspect-video md:aspect-video">
+              <iframe 
+                width="100%" 
+                height="100%" 
+                scrolling="no" 
+                frameBorder="no" 
+                allow="autoplay" 
+                src={`https://w.soundcloud.com/player/?url=${encodeURIComponent(currentTrack.url)}&color=%23ff5500&auto_play=true&hide_related=false&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true`}
+              ></iframe>
+            </div>
+          </div>
+        )}
         
         {/* Tour Section */}
         <section id="tour" className="mb-16">

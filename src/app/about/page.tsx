@@ -6,36 +6,75 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 export default function About() {
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(true); // Start with true to ensure content is visible
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
-  // Simulate loading state for animations
+  // Simplified loading state
   useEffect(() => {
-    setIsLoaded(true);
+    // Just to ensure any components depending on isLoaded are triggered properly
+    const timer = setTimeout(() => {
+      setIsLoaded(true);
+    }, 10);
+    
+    return () => clearTimeout(timer);
   }, []);
 
-  // Text reveal animation variants
+  // Text reveal animation variants with fallback opacity
   const textReveal = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0.7, y: 20 }, // Start partially visible in case of issues
     visible: (i: number) => ({
       opacity: 1,
       y: 0,
       transition: {
-        delay: 0.3 + i * 0.2,
-        duration: 0.8
+        delay: 0.1 + i * 0.1,
+        duration: 0.6
       }
     })
   };
 
   return (
-    <main className="bg-black text-white min-h-screen">
+    <main className="bg-black text-white min-h-screen relative">
+      {/* Fire video background */}
+      <div className="fixed inset-0 w-full h-full z-0">
+        <div className="absolute inset-0 bg-black bg-opacity-60 z-1"></div>
+        <video 
+          autoPlay 
+          loop 
+          muted 
+          playsInline
+          className="w-full h-full object-cover"
+        >
+          <source src="/fire.mp4" type="video/mp4" />
+        </video>
+      </div>
+      
+      {/* Glitch effects */}
+      <div style={{ 
+        backgroundImage: 'url(/scanlines.png)',
+        backgroundRepeat: 'repeat',
+        position: 'fixed',
+        inset: 0,
+        width: '100%',
+        height: '100%',
+        pointerEvents: 'none',
+        zIndex: 5,
+        opacity: 0.2,
+        mixBlendMode: 'overlay'
+      }}></div>
+      
       {/* Navigation */}
       <header className="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-sm px-6 py-4">
         <div className="flex justify-between items-center max-w-6xl mx-auto">
           <Link href="/enter">
-            <h1 className="text-4xl font-extrabold glitch-text tracking-tighter">
-              ZOMBIE
-            </h1>
+            <div className="w-32 h-12 relative">
+              <Image 
+                src="/logo.png" 
+                alt="ZOMBIE" 
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
           </Link>
           <nav className="hidden md:flex space-x-8">
             <Link href="/enter" className="text-white hover:text-red-500 transition-colors">Music</Link>
@@ -112,7 +151,7 @@ export default function About() {
       )}
 
       {/* Header - The Undead Manifesto */}
-      <section className="pt-28 pb-16 px-6">
+      <section className="pt-28 pb-16 px-6 relative z-10">
         <div className="max-w-4xl mx-auto">
           <motion.h1 
             className="text-5xl md:text-7xl font-extrabold glitch-text mb-8"
@@ -133,7 +172,7 @@ export default function About() {
       </section>
 
       {/* Bio Section */}
-      <section className="py-12 px-6 relative overflow-hidden">
+      <section className="py-12 px-6 relative overflow-hidden z-10">
         <div className="max-w-4xl mx-auto">
           <motion.h2 
             className="text-3xl font-bold mb-8 digital-glitch"
@@ -186,7 +225,7 @@ export default function About() {
       </section>
 
       {/* Animated AI DJ Section */}
-      <section className="py-12 px-6 bg-black/70 relative overflow-hidden">
+      <section className="py-12 px-6 bg-black/70 relative overflow-hidden z-10">
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-8">
           <motion.div 
             className="w-full md:w-1/2 flex justify-center"
@@ -253,7 +292,7 @@ export default function About() {
       </section>
 
       {/* Manifesto Section */}
-      <section className="py-16 px-6 relative">
+      <section className="py-16 px-6 relative z-10">
         <div className="max-w-4xl mx-auto">
           <motion.h2 
             className="text-3xl font-bold mb-8 digital-glitch"
