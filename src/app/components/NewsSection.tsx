@@ -36,7 +36,7 @@ export default function NewsSection() {
               <span className="text-red-500 text-sm">February 25, 2025</span>
             </div>
             <h3 className="text-xl font-bold mb-2 group-hover:text-red-500 transition-colors">NEW ALBUM DROPS NEXT MONTH</h3>
-            <p className="text-zinc-400 line-clamp-2">After months of late nights in the studio, I'm excited to announce my new album "Digital Resurrection" will be available on all platforms March 30th.</p>
+            <p className="text-zinc-400 line-clamp-2">After months of late nights in the studio, I&apos;m excited to announce my new album &quot;Digital Resurrection&quot; will be available on all platforms March 30th.</p>
           </Link>
 
           {/* News Item 2 */}
@@ -62,7 +62,7 @@ export default function NewsSection() {
             <div className="relative aspect-video overflow-hidden mb-4 border border-zinc-800 group-hover:border-red-500 transition-colors">
               <Image 
                 src="/album3.png" 
-                alt="REMIX COMPETITION: \"DIGITAL DECAY\""
+                alt="REMIX COMPETITION: &#39;DIGITAL DECAY&#39;"
                 fill
                 className="object-cover transition-transform group-hover:scale-105 duration-500"
               />
@@ -71,7 +71,7 @@ export default function NewsSection() {
             <div className="mb-2">
               <span className="text-red-500 text-sm">January 30, 2025</span>
             </div>
-            <h3 className="text-xl font-bold mb-2 group-hover:text-red-500 transition-colors">REMIX COMPETITION: "DIGITAL DECAY"</h3>
+            <h3 className="text-xl font-bold mb-2 group-hover:text-red-500 transition-colors">REMIX COMPETITION: &quot;DIGITAL DECAY&quot;</h3>
             <p className="text-zinc-400 line-clamp-2">Want to put your own spin on my latest single? Submit your remix for a chance to be featured on the official remix EP.</p>
           </Link>
         </div>

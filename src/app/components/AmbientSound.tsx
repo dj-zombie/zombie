@@ -70,7 +70,7 @@ export default function AmbientSound({
         clearTimeout(glitchTimeoutRef.current);
       }
     };
-  }, []);
+  }, [autoPlay, playRandomGlitch, volume]);
 
   // Handle volume changes
   useEffect(() => {

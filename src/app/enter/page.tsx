@@ -8,7 +8,6 @@ import Spinner from '../components/Spinner';
 import InstagramFeed from '../components/InstagramFeed';
 
 export default function Home() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [currentTrack, setCurrentTrack] = useState<null | {title: string, url: string}>(null);
   const [loading, setLoading] = useState(true);
 

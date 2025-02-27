@@ -2,7 +2,6 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image'; 
-import Link from 'next/link';
 import { merchItems } from '../data/merchData';
 import Product3DViewer from '../components/Product3DViewer';
 import Header from '../components/Header';

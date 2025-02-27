@@ -7,9 +7,18 @@ import { motion } from 'framer-motion';
 import Spinner from './Spinner';
 import InstagramPlaceholder from './InstagramPlaceholder';
 
+// Define interface for Instagram posts
+interface InstagramPost {
+  id: string;
+  caption: string;
+  media_url: string;
+  timestamp: string;
+  permalink: string;
+}
+
 // Enhanced Instagram data mock
 // Since Instagram API requires authentication, we'll use this enhanced mock data
-const zombieInstagramPosts = [
+const zombieInstagramPosts: InstagramPost[] = [
   {
     id: '1',
     caption: 'Dropping beats at Techno Inferno #DJZombie #LiveSet',
@@ -102,7 +111,7 @@ interface InstagramFeedProps {
 }
 
 export default function InstagramFeed({ username, limit = 6 }: InstagramFeedProps) {
-  const [posts, setPosts] = useState<any[]>([]);
+  const [posts, setPosts] = useState<InstagramPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

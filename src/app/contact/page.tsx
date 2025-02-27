@@ -202,7 +202,7 @@ export default function ContactPage() {
                     className="text-sm text-zinc-400 mb-8"
                     variants={fadeInUp}
                   >
-                    Use this code on the downloads page to access the unreleased track "Digital Necromancy"
+                    Use this code on the downloads page to access the unreleased track &quot;Digital Necromancy&quot;
                   </motion.p>
                   <motion.button 
                     onClick={handleReset}

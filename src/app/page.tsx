@@ -1,12 +1,11 @@
 'use client';
 
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useEffect, useState, useRef } from "react";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
-  const [scrolled, setScrolled] = useState(false);
   const [textTriggers, setTextTriggers] = useState({
     emerging: false,
     fromThe: false,
@@ -42,17 +41,21 @@ export default function Home() {
         {/* Background container */}
         <div className="relative w-full">
           <div className="w-full">
-            <img 
+            <Image 
               src="/background-tall.png"
               alt="ZOMBIE Main Background"
               className="w-full h-auto"
+              width={1920}
+              height={1080}
             />
           </div>
           <div className="w-full">
-            <img 
+            <Image 
               src="/hell.png"
               alt="ZOMBIE Hell Background"
               className="w-full h-auto"
+              width={1920}
+              height={1080}
             />
           </div>
         </div>
