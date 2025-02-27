@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 
 interface AmbientSoundProps {
   initialVolume?: number; // 0.0 to 1.0
@@ -18,7 +18,7 @@ export default function AmbientSound({
   const glitchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Play random glitch sound at random intervals
-  const playRandomGlitch = () => {
+  const playRandomGlitch = useCallback(() => {
     if (glitchAudioRef.current && !isMuted) {
       // Reset audio to beginning if it's already playing
       glitchAudioRef.current.currentTime = 0;
@@ -33,7 +33,7 @@ export default function AmbientSound({
     // Schedule next glitch (between 5-15 seconds)
     const nextInterval = 5000 + Math.random() * 10000;
     glitchTimeoutRef.current = setTimeout(playRandomGlitch, nextInterval);
-  };
+  }, [volume, isMuted]);
 
   // Initialize audio elements and start playback
   useEffect(() => {

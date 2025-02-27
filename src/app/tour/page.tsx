@@ -25,7 +25,7 @@ export default function TourPage() {
     }, 8000);
     
     return () => clearInterval(interval);
-  }, []);
+  }, [performanceVideos.length]);
   
   // Simulated flickering effect for the pins
   useEffect(() => {

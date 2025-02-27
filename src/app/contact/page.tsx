@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, ChangeEvent, FormEvent } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Header from '../components/Header';
@@ -38,11 +38,13 @@ export default function ContactPage() {
   }
 
   // Handle form input changes
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    const isCheckbox = (e.target as HTMLInputElement).type === 'checkbox';
+    
     setFormData(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: isCheckbox ? (e.target as HTMLInputElement).checked : value
     }));
     
     // Trigger glitch effect when typing
@@ -53,7 +55,7 @@ export default function ContactPage() {
   };
   
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
     

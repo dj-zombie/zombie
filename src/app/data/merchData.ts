@@ -10,6 +10,7 @@ export interface MerchItem {
     hex: string;
   }[];
   sizes?: string[];
+  features?: string[];
   featured: boolean;
   new: boolean;
   soldOut: boolean;

@@ -7,12 +7,12 @@ import Product3DViewer from '../components/Product3DViewer';
 import Header from '../components/Header';
 
 export default function MerchPage() {
-  const [activeProduct, setActiveProduct] = useState(null);
+  const [activeProduct, setActiveProduct] = useState<typeof merchItems[0] | null>(null);
   const [isViewerOpen, setIsViewerOpen] = useState(false);
-  const scrollContainerRef = useRef(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   
-  // Handle horizontal scrolling
-  const handleWheel = (e) => {
+  // Handle horizontal scrolling for native DOM events
+  const handleDOMWheel = (e: WheelEvent) => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollLeft += e.deltaY;
       // Prevent vertical scrolling when scrolling horizontally
@@ -25,17 +25,17 @@ export default function MerchPage() {
   useEffect(() => {
     const scrollContainer = scrollContainerRef.current;
     if (scrollContainer) {
-      scrollContainer.addEventListener('wheel', handleWheel, { passive: false });
+      scrollContainer.addEventListener('wheel', handleDOMWheel, { passive: false });
     }
     
     return () => {
       if (scrollContainer) {
-        scrollContainer.removeEventListener('wheel', handleWheel);
+        scrollContainer.removeEventListener('wheel', handleDOMWheel);
       }
     };
   }, []);
   
-  const openViewer = (product) => {
+  const openViewer = (product: typeof merchItems[0]) => {
     setActiveProduct(product);
     setIsViewerOpen(true);
   };
@@ -113,7 +113,7 @@ export default function MerchPage() {
                       {product.soldOut ? (
                         <span className="text-zinc-500">SOLD OUT</span>
                       ) : (
-                        <span className="text-zinc-400 text-sm">{product.inStock} LEFT</span>
+                        <span className="text-zinc-400 text-sm">IN STOCK</span>
                       )}
                     </div>
                   </div>
@@ -142,59 +142,65 @@ export default function MerchPage() {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="aspect-square">
-                <Product3DViewer product={activeProduct} />
+                <Product3DViewer 
+                  images={activeProduct?.images || []} 
+                  productName={activeProduct?.name || ''} 
+                  onClose={() => setIsViewerOpen(false)} 
+                />
               </div>
               
               <div className="py-4">
-                <h2 className="text-3xl font-bold text-red-500 mb-2">{activeProduct.name}</h2>
-                <div className="text-2xl text-green-500 font-bold mb-4">${activeProduct.price}</div>
-                <p className="text-zinc-300 mb-6">{activeProduct.description}</p>
-                
-                {activeProduct.features && (
-                  <div className="mb-6">
-                    <h3 className="text-xl font-semibold mb-2">Features:</h3>
-                    <ul className="list-disc pl-5 text-zinc-400 space-y-1">
-                      {activeProduct.features.map((feature, index) => (
-                        <li key={index}>{feature}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-                
-                <div className="mb-6">
-                  <h3 className="text-xl font-semibold mb-2">Available Sizes:</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {activeProduct.sizes.map((size) => (
-                      <div 
-                        key={size} 
-                        className={`
-                          px-4 py-2 border 
-                          ${size === 'M' || size === 'L' ? 'border-red-500 text-red-500' : 'border-zinc-700 text-zinc-400'} 
-                          hover:border-red-500 hover:text-red-500 transition-colors cursor-pointer
-                        `}
-                      >
-                        {size}
+                {activeProduct && (
+                  <>
+                    <h2 className="text-3xl font-bold text-red-500 mb-2">{activeProduct.name}</h2>
+                    <div className="text-2xl text-green-500 font-bold mb-4">${activeProduct.price}</div>
+                    <p className="text-zinc-300 mb-6">{activeProduct.description}</p>
+                    
+                    {activeProduct.features && (
+                      <div className="mb-6">
+                        <h3 className="text-xl font-semibold mb-2">Features:</h3>
+                        <ul className="list-disc pl-5 text-zinc-400 space-y-1">
+                          {activeProduct.features.map((feature, index) => (
+                            <li key={index}>{feature}</li>
+                          ))}
+                        </ul>
                       </div>
-                    ))}
-                  </div>
-                </div>
-                
-                <div className="mt-8">
-                  {activeProduct.soldOut ? (
-                    <button 
-                      disabled
-                      className="w-full py-3 bg-zinc-800 text-zinc-500 font-bold cursor-not-allowed"
-                    >
-                      SOLD OUT
-                    </button>
-                  ) : (
-                    <button 
-                      className="w-full py-3 bg-red-600 hover:bg-red-700 text-white font-bold transition-colors"
-                    >
-                      ADD TO CART
-                    </button>
-                  )}
-                </div>
+                    )}
+                    
+                    {activeProduct.sizes && (
+                      <div className="mb-6">
+                        <h3 className="text-xl font-semibold mb-2">Available Sizes:</h3>
+                        <div className="flex flex-wrap gap-2">
+                          {activeProduct.sizes.map((size) => (
+                            <button 
+                              key={size} 
+                              className="bg-zinc-800 hover:bg-zinc-700 px-4 py-2 rounded-md transition"
+                            >
+                              {size}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    
+                    <div className="mt-8">
+                      {activeProduct.soldOut ? (
+                        <button 
+                          disabled
+                          className="w-full py-3 bg-zinc-800 text-zinc-500 font-bold cursor-not-allowed"
+                        >
+                          SOLD OUT
+                        </button>
+                      ) : (
+                        <button 
+                          className="w-full py-3 bg-red-600 hover:bg-red-700 text-white font-bold transition-colors"
+                        >
+                          ADD TO CART
+                        </button>
+                      )}
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </div>

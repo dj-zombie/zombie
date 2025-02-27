@@ -1,9 +1,10 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { usePathname } from 'next/navigation';
+import { ReactNode } from 'react';
 
-const pageVariants = {
+const pageVariants: Variants = {
   initial: {
     opacity: 0,
     scale: 0.98,
@@ -26,7 +27,7 @@ const pageVariants = {
   },
 };
 
-const glitchVariants = {
+const glitchVariants: Variants = {
   initial: {
     clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0% 100%)',
   },
@@ -44,7 +45,11 @@ const glitchVariants = {
   },
 };
 
-export const AnimatedLayout = ({ children }) => {
+interface AnimatedLayoutProps {
+  children: ReactNode;
+}
+
+export const AnimatedLayout = ({ children }: AnimatedLayoutProps) => {
   const pathname = usePathname();
 
   return (
@@ -73,13 +78,13 @@ export const AnimatedLayout = ({ children }) => {
 };
 
 // Animation presets for reuse across components
-export const fadeInUp = {
+export const fadeInUp: Variants = {
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
   exit: { opacity: 0, y: -20 },
 };
 
-export const staggerChildren = {
+export const staggerChildren: Variants = {
   animate: {
     transition: {
       staggerChildren: 0.1,
@@ -87,7 +92,7 @@ export const staggerChildren = {
   },
 };
 
-export const glitchText = {
+export const glitchText: Variants = {
   initial: {
     textShadow: "0 0 0 rgba(255,0,0,0)",
   },
@@ -106,7 +111,7 @@ export const glitchText = {
   },
 };
 
-export const hoverScale = {
+export const hoverScale: Variants = {
   initial: { scale: 1 },
   whileHover: { 
     scale: 1.05,
