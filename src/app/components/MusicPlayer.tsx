@@ -1,6 +1,20 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import Spinner from './Spinner';
 
 export default function MusicPlayer() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <Spinner />;
+  }
+
   return (
     <div className="relative">
       {/* Neon grid visualizer */}

@@ -11,6 +11,7 @@ const menuItems = [
   { href: '/music', label: 'MUSIC' },
   { href: '/tour', label: 'TOUR' },
   { href: '/merch', label: 'MERCH' },
+  { href: '/gallery', label: 'GALLERY' },
   { href: '/blog', label: 'NEWS' },
   { href: '/about', label: 'ABOUT' },
   { href: '/contact', label: 'CONTACT' }

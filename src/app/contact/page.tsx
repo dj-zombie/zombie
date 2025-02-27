@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Header from '../components/Header';
+import Spinner from '../components/Spinner';
 import { fadeInUp, staggerChildren, glitchText, hoverScale } from '../components/AnimatedLayout';
 
 export default function ContactPage() {
@@ -23,7 +24,19 @@ export default function ContactPage() {
   const [showEasterEgg, setShowEasterEgg] = useState(false);
   const [typingGlitch, setTypingGlitch] = useState(false);
   const messageRef = useRef(null);
-  
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <Spinner />;
+  }
+
   // Handle form input changes
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;

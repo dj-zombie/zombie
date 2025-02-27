@@ -1,14 +1,28 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Header from '../components/Header';
+import Spinner from '../components/Spinner';
+import InstagramFeed from '../components/InstagramFeed';
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [currentTrack, setCurrentTrack] = useState<null | {title: string, url: string}>(null);
-  
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <Spinner />;
+  }
+
   // Mock data for the page
   const latestReleases = [
     { 
@@ -314,6 +328,24 @@ export default function Home() {
               <div className="w-6 h-6 bg-white rounded-full"></div>
             </a>
           ))}
+        </section>
+        
+        {/* Instagram Feed */}
+        <section className="my-20 relative z-10">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl md:text-4xl font-bold mb-8 glitch-text">INSTAGRAM</h2>
+            <div className="mb-8">
+              <InstagramFeed username="deejayzombie" limit={6} />
+            </div>
+            <div className="text-center mt-8">
+              <Link 
+                href="/gallery" 
+                className="inline-block px-6 py-2 border border-red-600 text-red-500 hover:bg-red-600 hover:text-white transition duration-300 rounded-sm text-sm uppercase tracking-wider"
+              >
+                View Gallery
+              </Link>
+            </div>
+          </div>
         </section>
         
         {/* Footer */}

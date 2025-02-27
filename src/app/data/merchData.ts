@@ -88,6 +88,7 @@ export const merchItems: MerchItem[] = [
       { name: 'Standard', hex: '#000000' }
     ],
     featured: false,
+    sizes: ['One Size'],
     new: true,
     soldOut: false
   },
@@ -104,6 +105,7 @@ export const merchItems: MerchItem[] = [
       { name: 'Holographic', hex: '#c0c0c0' }
     ],
     featured: false,
+    sizes: ['One Size'],
     new: false,
     soldOut: false
   },

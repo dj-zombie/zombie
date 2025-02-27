@@ -78,7 +78,7 @@ export default function MerchPage() {
             </div>
             
             {/* Product grid */}
-            {merchItems.map((product) => (
+            {(merchItems || []).map((product) => (
               <div 
                 key={product.id}
                 className="flex-none w-4/5 md:w-2/5 lg:w-1/4 px-4 snap-start"

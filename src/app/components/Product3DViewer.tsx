@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
+import Spinner from './Spinner';
 
 interface Product3DViewerProps {
   images: string[];
@@ -9,24 +10,33 @@ interface Product3DViewerProps {
   onClose: () => void;
 }
 
-export default function Product3DViewer({ images, productName, onClose }: Product3DViewerProps) {
+export default function Product3DViewer({ images = [], productName, onClose }: Product3DViewerProps) {
+  // State hooks grouped first
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isRotating, setIsRotating] = useState(true);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  // Ref declaration
   const viewerRef = useRef<HTMLDivElement>(null);
-  
-  // Auto-rotate through images
+
+  // Effect hooks grouped after
   useEffect(() => {
-    if (!isRotating) return;
-    
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (!isRotating || !images || images.length === 0) return;
     const interval = setInterval(() => {
       setCurrentIndex(prev => (prev + 1) % images.length);
     }, 500);
-    
     return () => clearInterval(interval);
-  }, [isRotating, images.length]);
-  
+  }, [isRotating, images]);
+
   // Handle mouse/touch interactions
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsRotating(false);
@@ -47,6 +57,7 @@ export default function Product3DViewer({ images, productName, onClose }: Produc
     if (Math.abs(deltaX) > 30) {
       const direction = deltaX > 0 ? -1 : 1;
       setCurrentIndex(prev => {
+        if (!images || images.length === 0) return prev;
         const newIndex = prev + direction;
         if (newIndex < 0) return images.length - 1;
         if (newIndex >= images.length) return 0;
@@ -63,6 +74,7 @@ export default function Product3DViewer({ images, productName, onClose }: Produc
     if (Math.abs(deltaX) > 30) {
       const direction = deltaX > 0 ? -1 : 1;
       setCurrentIndex(prev => {
+        if (!images || images.length === 0) return prev;
         const newIndex = prev + direction;
         if (newIndex < 0) return images.length - 1;
         if (newIndex >= images.length) return 0;
@@ -105,7 +117,19 @@ export default function Product3DViewer({ images, productName, onClose }: Produc
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [onClose, images.length]);
+  }, [onClose, images]);
+  
+  if (loading) {
+    return <Spinner />;
+  }
+
+  if (!images || images.length === 0) {
+    return (
+      <div className="flex items-center justify-center h-full p-8">
+        <p className="text-white">No images available.</p>
+      </div>
+    );
+  }
   
   return (
     <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4">
@@ -133,23 +157,19 @@ export default function Product3DViewer({ images, productName, onClose }: Produc
         
         <div className="relative aspect-square w-full overflow-hidden mb-4">
           <div className={`absolute inset-0 flex items-center justify-center transition-transform duration-300 ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}>
-            {images.length > 0 && (
-              <div className="relative h-full w-full">
-                {images.map((img, index) => (
-                  <div 
-                    key={index}
-                    className={`absolute inset-0 transition-opacity duration-300 ${index === currentIndex ? 'opacity-100' : 'opacity-0'}`}
-                  >
-                    <Image
-                      src={img}
-                      alt={`${productName} view ${index + 1}`}
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-                ))}
+            {(images || []).map((img, index) => (
+              <div 
+                key={index}
+                className={`absolute inset-0 transition-opacity duration-300 ${index === currentIndex ? 'opacity-100' : 'opacity-0'}`}
+              >
+                <Image
+                  src={img}
+                  alt={`${productName} view ${index + 1}`}
+                  fill
+                  className="object-contain"
+                />
               </div>
-            )}
+            ))}
           </div>
         </div>
         
@@ -163,7 +183,7 @@ export default function Product3DViewer({ images, productName, onClose }: Produc
         </div>
         
         <div className="flex justify-center mt-4">
-          {images.map((_, index) => (
+          {(images || []).map((_, index) => (
             <button
               key={index}
               onClick={() => {
