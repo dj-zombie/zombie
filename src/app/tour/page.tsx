@@ -56,8 +56,8 @@ export default function TourPage() {
       {/* Main content container */}
       <div className="pt-28 pb-16 px-6 relative z-10">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-5xl md:text-7xl font-extrabold mb-4 glitch-text">LIVE_EXORCISMS</h1>
-          <h2 className="text-xl md:text-2xl text-red-500 mb-16">UNDEAD REANIMATION TOUR 2025</h2>
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold mb-4 glitch-text">LIVE_EXORCISMS</h1>
+          <h2 className="text-lg sm:text-xl md:text-2xl text-red-500 mb-16">UNDEAD REANIMATION TOUR 2025</h2>
           
           {/* Video overlay - rotating slideshow */}
           <div className="mb-16 relative aspect-video w-full overflow-hidden border border-red-500 shadow-neon">
@@ -110,20 +110,20 @@ export default function TourPage() {
           </div>
           
           {/* Tour dates with glitch hover effects */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {tourDates.map((tour) => (
               <div 
                 key={tour.id}
                 className={`group relative bg-zinc-900/60 backdrop-blur-sm border ${tour.soldOut ? 'border-zinc-700' : 'border-red-500'} hover:border-neon transition-colors overflow-hidden`}
               >
                 {/* Date card content */}
-                <div className="p-6">
-                  <div className="flex justify-between items-start mb-4">
+                <div className="p-4 sm:p-6">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-4 gap-2 sm:gap-0">
                     <div>
                       <h3 className="text-xl font-bold group-hover:text-red-500 transition-colors">{tour.city}</h3>
                       <p className="text-zinc-400">{tour.country}</p>
                     </div>
-                    <div className="text-right">
+                    <div className="text-left sm:text-right">
                       <p className="text-red-500">{tour.date}</p>
                       <p className="text-zinc-400">{tour.time}</p>
                     </div>

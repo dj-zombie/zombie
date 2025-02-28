@@ -4,10 +4,10 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
+import Header from '../components/Header';
 
 export default function About() {
   const [isLoaded, setIsLoaded] = useState(true); // Start with true to ensure content is visible
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   // Simplified loading state
   useEffect(() => {
@@ -63,92 +63,7 @@ export default function About() {
       }}></div>
       
       {/* Navigation */}
-      <header className="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-sm px-6 py-4">
-        <div className="flex justify-between items-center max-w-6xl mx-auto">
-          <Link href="/enter">
-            <div className="w-32 h-12 relative">
-              <Image 
-                src="/logo.png" 
-                alt="ZOMBIE" 
-                fill
-                className="object-contain"
-                priority
-              />
-            </div>
-          </Link>
-          <nav className="hidden md:flex space-x-8">
-            <Link href="/enter" className="text-white hover:text-red-500 transition-colors">Music</Link>
-            <Link href="/enter#tour" className="text-white hover:text-red-500 transition-colors">Tour</Link>
-            <Link href="/enter#news" className="text-white hover:text-red-500 transition-colors">News</Link>
-            <Link href="/about" className="text-red-500 transition-colors">About</Link>
-          </nav>
-          {/* Mobile menu button */}
-          <button 
-            className="md:hidden glitch-hover"
-            onClick={() => setMobileMenuOpen(true)}
-          >
-            <span className="block w-6 h-0.5 bg-white mb-1"></span>
-            <span className="block w-6 h-0.5 bg-white mb-1"></span>
-            <span className="block w-6 h-0.5 bg-white"></span>
-          </button>
-        </div>
-      </header>
-
-      {/* Mobile menu */}
-      {mobileMenuOpen && (
-        <motion.div 
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="fixed inset-0 bg-black bg-opacity-95 z-50 flex flex-col justify-center items-center"
-        >
-          <button 
-            className="absolute top-8 right-8 text-white text-2xl"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            ✕
-          </button>
-          <nav className="text-center">
-            <ul className="space-y-8 text-xl">
-              <li>
-                <Link
-                  href="/enter"
-                  className="hover:text-red-600 transition-colors"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  MUSIC
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/enter#tour"
-                  className="hover:text-red-600 transition-colors"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  TOUR
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/enter#news"
-                  className="hover:text-red-600 transition-colors"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  NEWS
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/about"
-                  className="text-red-600 transition-colors"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  ABOUT
-                </Link>
-              </li>
-            </ul>
-          </nav>
-        </motion.div>
-      )}
+      <Header />
 
       {/* Header - The Undead Manifesto */}
       <section className="pt-28 pb-16 px-6 relative z-10">
